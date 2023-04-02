@@ -30,6 +30,20 @@
         button:hover {
             background-color: #3E8E41;
         }
+
+        /* 媒體查詢 */
+        @media (max-width: 768px) {
+          h1 {
+            font-size: 30px;
+          }
+          p {
+            font-size: 16px;
+          }
+          button {
+            font-size: 16px;
+            padding: 8px 16px;
+          }
+        }
     </style>
 </head>
 <body>
@@ -41,7 +55,7 @@
     
     <script>
         // Parse the CSV file
-        Papa.parse("/chat_v2.github.io/english_list.csv", {
+        Papa.parse("english_list.csv", {
             download: true,
             header: false,
             complete: function(results) {
