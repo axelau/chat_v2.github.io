@@ -6,13 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
-        /* Reset default styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         /* Global styles */
         body {
             /* 背景顏色和文字顏色 */
@@ -70,28 +63,34 @@
     <button id="random-button" onclick="generateRandomWord()">Generate Random Word</button>
     
     <script>
-        // Parse the CSV file
-        Papa.parse("english_list.csv", {
-            download: true,
-            header: false,
-            complete: function(results) {
-                // Store the parsed data in an array
-                var data = results.data;
-                
-                // Generate a random number to select a random word
-                var randomIndex = Math.floor(Math.random() * data.length);
-                
-                // Display the selected word and its details on the page
-                document.getElementById("word").innerHTML = data[randomIndex][0];
-                document.getElementById("pos").innerHTML = "Part of speech: " + data[randomIndex][1];
-                document.getElementById("definition").innerHTML = "Definition: " + data[randomIndex][2];
-                document.getElementById("example").innerHTML = "Example: " + data[randomIndex][3];
+        // 定義一個全局變量，用於存儲單詞列表
+        let wordList = [];
+
+        // 網頁加載完成後，使用XMLHttpRequest從CSV文件中加載單詞列表
+        window.addEventListener("load", function() {
+          let xhr = new XMLHttpRequest();
+          xhr.open("GET", "wordlist.csv");
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              // 將CSV文件解析為數組
+              let lines = xhr.responseText.split("\n");
+              for (let i = 0; i < lines.length; i++) {
+                let fields = lines[i].split(",");
+                if (fields.length === 2) {
+                  wordList.push(fields[1]);
+                }
+              }
+            } else {
+              console.error("Failed to load wordlist.csv");
             }
+          };
+          xhr.send();
         });
-        
-        function generateRandomWord() {
-            // Reload the page to generate a new random word
-            location.reload();
+
+        // 定義一個函數，用於從單詞列表中隨機選擇一個單詞
+        function getRandomWord() {
+          let randomIndex = Math.floor(Math.random() * wordList.length);
+          return wordList[randomIndex];
         }
     </script>
 </body>
