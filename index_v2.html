@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Random Word Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+    <h1 id="word"></h1>
+    <p id="pos"></p>
+    <p id="definition"></p>
+    <p id="example"></p>
+    <button id="random-button" onclick="generateRandomWord()">Generate Random Word</button>
+
+    <script>
+        var words = [];
+
+        function loadCSV() {
+            fetch("english_list.csv")
+            .then(response => response.text())
+            .then(data => {
+                Papa.parse(data, {
+                    header: true,
+                    complete: function(results) {
+                        results.data.forEach(function(row) {
+                            if (row.word && row.pos && row.definition && row.example) {
+                                words.push(row);
+                            }
+                        });
+                        generateRandomWord();
+                    }
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
+
+        function generateRandomWord() {
+            var randomIndex = Math.floor(Math.random() * words.length);
+            var randomWord = words[randomIndex];
+
+            document.getElementById("word").innerHTML = randomWord.word;
+            document.getElementById("pos").innerHTML = "詞性：" + randomWord.pos;
+            document.getElementById("definition").innerHTML = "中文意思：" + randomWord.definition;
+            document.getElementById("example").innerHTML = "例句：" + randomWord.example;
+        }
+
+        loadCSV();
+    </script>
+</body>
+</html>
