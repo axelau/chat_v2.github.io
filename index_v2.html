@@ -4,6 +4,33 @@
     <meta charset="UTF-8">
     <title>Random Word Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 40px;
+            margin-top: 50px;
+        }
+        p {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3E8E41;
+        }
+    </style>
 </head>
 <body>
     <h1 id="word"></h1>
@@ -11,42 +38,31 @@
     <p id="definition"></p>
     <p id="example"></p>
     <button id="random-button" onclick="generateRandomWord()">Generate Random Word</button>
-
+    
     <script>
-        var words = [];
-
-        function loadCSV() {
-            fetch("english_list.csv")
-            .then(response => response.text())
-            .then(data => {
-                Papa.parse(data, {
-                    header: true,
-                    complete: function(results) {
-                        results.data.forEach(function(row) {
-                            if (row.word && row.pos && row.definition && row.example) {
-                                words.push(row);
-                            }
-                        });
-                        generateRandomWord();
-                    }
-                });
-            })
-            .catch(error => {
-                console.log(error);
-            });
-        }
-
+        // Parse the CSV file
+        Papa.parse("/chat_v2.github.io/english_list.csv", {
+            download: true,
+            header: false,
+            complete: function(results) {
+                // Store the parsed data in an array
+                var data = results.data;
+                
+                // Generate a random number to select a random word
+                var randomIndex = Math.floor(Math.random() * data.length);
+                
+                // Display the selected word and its details on the page
+                document.getElementById("word").innerHTML = data[randomIndex][0];
+                document.getElementById("pos").innerHTML = "Part of speech: " + data[randomIndex][1];
+                document.getElementById("definition").innerHTML = "Definition: " + data[randomIndex][2];
+                document.getElementById("example").innerHTML = "Example: " + data[randomIndex][3];
+            }
+        });
+        
         function generateRandomWord() {
-            var randomIndex = Math.floor(Math.random() * words.length);
-            var randomWord = words[randomIndex];
-
-            document.getElementById("word").innerHTML = randomWord.word;
-            document.getElementById("pos").innerHTML = "詞性：" + randomWord.pos;
-            document.getElementById("definition").innerHTML = "中文意思：" + randomWord.definition;
-            document.getElementById("example").innerHTML = "例句：" + randomWord.example;
+            // Reload the page to generate a new random word
+            location.reload();
         }
-
-        loadCSV();
     </script>
 </body>
 </html>
