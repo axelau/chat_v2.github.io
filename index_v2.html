@@ -3,46 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Random Word Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Global styles */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
             text-align: center;
         }
+
         h1 {
-            font-size: 40px;
-            margin-top: 50px;
+            font-size: 6vw;
+            margin-top: 10vh;
         }
+
         p {
-            font-size: 20px;
-            margin: 10px 0;
+            font-size: 3vw;
+            margin: 5px 0;
         }
+
         button {
-            font-size: 20px;
-            padding: 10px 20px;
-            margin-top: 20px;
+            font-size: 3.5vw;
+            padding: 2vw 4vw;
+            margin-top: 5vh;
             border-radius: 5px;
             background-color: #4CAF50;
             color: white;
             border: none;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #3E8E41;
         }
 
         /* 媒體查詢 */
         @media (max-width: 768px) {
-          h1 {
-            font-size: 30px;
-          }
-          p {
-            font-size: 16px;
-          }
-          button {
-            font-size: 16px;
-            padding: 8px 16px;
-          }
+            h1 {
+                font-size: 30px;
+            }
+            p {
+                font-size: 16px;
+            }
+            button {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
