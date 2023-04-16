@@ -2,15 +2,35 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>HEIC轉換為JPG</title>
+    <title>進度指示器示例</title>
   </head>
   <body>
-    <h1>HEIC轉換為JPG</h1>
-    <input type="file" id="fileInput" accept=".heic">
-    <button onclick="convert()">轉換</button>
+    <h1>進度指示器示例</h1>
+    <input type="file" id="fileInput">
+    <button onclick="upload()">上傳</button>
+    <progress id="progressBar" value="0" max="100"></progress>
     <script>
-      function convert() {
-        // 在這裡添加轉換程式碼
+      function upload() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        if (!file) {
+          return;
+        }
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'path/to/upload/handler');
+        xhr.upload.onprogress = function(event) {
+          if (event.lengthComputable) {
+            const progressBar = document.getElementById('progressBar');
+            const progress = (event.loaded / event.total) * 100;
+            progressBar.value = progress;
+          }
+        };
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            // 上傳完成後的處理
+          }
+        };
+        xhr.send(file);
       }
     </script>
   </body>
