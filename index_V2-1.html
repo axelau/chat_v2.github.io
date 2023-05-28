@@ -83,13 +83,16 @@
             margin-left: 30px;
             text-align: left;
             font-size: 14pt;
-            font-family: Noto+Sans:wght@100;
+            
         }
 
         .name{
             text-align: left;
             font-size: 56pt;
             text-align: left;
+
+            font-family: 'Noto Sans', sans-serif;
+            font-weight: 100;
         }
 
         .nameBox{
@@ -109,6 +112,12 @@
             margin-left: 30px;
             text-align: left;
             font-size: 28pt;
+        }
+
+        .noto{
+            font-family: 'Noto Sans', sans-serif;
+            font-weight: 100;
+            font-stretch: ultra-condensed;
         }
 
         #example{
@@ -161,7 +170,7 @@
 <body>
     <div id=textbox>
         <div class="nameBox">
-            <h1 id="word" class="name">deep</h1>
+            <h1 id="word" class="name noto">deep</h1>
         </div>
 
         <p id="typebox">TYPE:</p>
@@ -171,7 +180,7 @@
         <p id="definition" class="asker">深的/深遠的</p>
 
         <p id="typebox">EXAMPLE:</p>
-        <p id="example" >She is from the South. The South Pole is the most southern point on Earth.</p>
+        <p id="example">She is from the South. The South Pole is the most southern point on Earth.</p>
         <div id="buttonBox">
             <button id="random-button" onclick="generateRandomWord()">Generate Random Word</button>
         </div>
