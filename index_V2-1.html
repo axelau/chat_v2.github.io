@@ -1,0 +1,174 @@
+  
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Random Word Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;300&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #878787;
+        }
+
+        #textbox {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            background-color: #DBDBDB;
+            margin: 30px;
+            border-radius: 45px;
+            min-width: 474px;
+            max-width: 30%;
+            height: 86.5%;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-top: 50px;
+            text-align: left;
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 18pt;
+        }
+
+        #word{
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            max-height: 18%;
+            text-align: left;
+
+            border-bottom: 1px solid grey;
+        }
+
+        #pos{
+            height: 14%;
+        }
+
+        #definition{
+            height: 14%;
+        }
+
+        #example{
+            height: 14%;
+        }
+
+        #buttonBox{
+            height: 14%;
+        }
+        
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #typebox{
+            margin-left: 30px;
+            text-align: left;
+            font-size: 14pt;
+            font-family: Noto+Sans:wght@100;
+        }
+
+        .name{
+            font-size: 56pt;
+        }
+
+        .asker{
+            margin-left: 30px;
+            text-align: left;
+            font-size: 36pt;
+        }
+
+        #example{
+            margin-left: 30px;
+            text-align: left;
+        }
+
+        button:hover {
+            background-color: #3E8E41;
+        }
+
+        /* 媒體查詢 */
+        @media (max-width: 768px) {
+          h1 {
+            font-size: 30px;
+          }
+          p {
+            font-size: 16px;
+          }
+          button {
+            font-size: 16px;
+            padding: 8px 16px;
+          }
+        }
+    </style>
+</head>
+<body>
+    <div id=textbox>
+        <h1 id="word" class="name">deep</h1>
+
+        <p id="typebox">TYPE:</p>
+        <p id="pos" class="asker">形容詞</p>
+
+        <p id="typebox">DEF:</p>
+        <p id="definition" class="asker">深的/深遠的</p>
+
+        <p id="typebox">EXAMPLE:</p>
+        <p id="example" >She is from the South. The South Pole is the most southern point on Earth.</p>
+        <div id="buttonBox">
+            <button id="random-button" onclick="generateRandomWord()">Generate Random Word</button>
+        </div>
+
+    </div>
+
+    
+    <script>
+        // Parse the CSV file
+        Papa.parse("english_list.csv", {
+            download: true,
+            header: false,
+            complete: function(results) {
+                // Store the parsed data in an array
+                var data = results.data;
+                
+                // Generate a random number to select a random word
+                var randomIndex = Math.floor(Math.random() * data.length);
+                
+                // Display the selected word and its details on the page
+                document.getElementById("word").innerHTML = data[randomIndex][0];
+                document.getElementById("pos").innerHTML = data[randomIndex][1];
+                document.getElementById("definition").innerHTML = "Def: " + data[randomIndex][2];
+                document.getElementById("example").innerHTML = "Example: " + data[randomIndex][3];
+            }
+        });
+        
+        function generateRandomWord() {
+            // Reload the page to generate a new random word
+            location.reload();
+        }
+    </script>
+</body>
+</html>
