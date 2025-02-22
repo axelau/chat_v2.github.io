@@ -166,6 +166,16 @@
           }
 
         }
+
+        #historyList {
+            margin-top: 20px;
+            list-style-type: none;
+        }
+        #historyList li {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -186,33 +196,57 @@
             <button id="random-button" onclick="generateRandomWord()">Generate Random Word</button>
         </div>
 
+        <ul id="historyList"></ul>
     </div>
 
     
     <script>
+        var data = [];
+        var history = []; // 用於儲存歷史記錄
+    
         // Parse the CSV file
         Papa.parse("english_list.csv", {
             download: true,
             header: false,
             complete: function(results) {
                 // Store the parsed data in an array
-                var data = results.data;
-                
-                // Generate a random number to select a random word
-                var randomIndex = Math.floor(Math.random() * data.length);
-                
-                // Display the selected word and its details on the page
-                document.getElementById("word").innerHTML = data[randomIndex][0];
-                document.getElementById("pos").innerHTML = data[randomIndex][1];
-                document.getElementById("definition").innerHTML = data[randomIndex][2];
-                document.getElementById("example").innerHTML = data[randomIndex][3];
+                data = results.data;
+                generateRandomWord(); // Generate a word on initial load
             }
         });
         
         function generateRandomWord() {
-            // Reload the page to generate a new random word
-            location.reload();
+            // Generate a random number to select a random word
+            var randomIndex = Math.floor(Math.random() * data.length);
+            
+            // Display the selected word and its details on the page
+            document.getElementById("word").innerHTML = data[randomIndex][0];
+            document.getElementById("pos").innerHTML = data[randomIndex][1];
+            document.getElementById("definition").innerHTML = data[randomIndex][2];
+            document.getElementById("example").innerHTML = data[randomIndex][3];
+    
+            // Add to history
+            history.push({ word: data[randomIndex][0], pos: data[randomIndex][1], definition: data[randomIndex][2], example: data[randomIndex][3] });
+            updateHistoryList();
         }
-    </script>
+    
+        function updateHistoryList() {
+            var historyList = document.getElementById("historyList");
+            historyList.innerHTML = ""; // 清空現有的清單
+    
+            history.forEach((entry, index) => {
+                var listItem = document.createElement("li");
+                listItem.textContent = entry.word;
+                listItem.onclick = function() {
+                    // 回到過去的單詞
+                    document.getElementById("word").innerHTML = entry.word;
+                    document.getElementById("pos").innerHTML = entry.pos;
+                    document.getElementById("definition").innerHTML = entry.definition;
+                    document.getElementById("example").innerHTML = entry.example;
+                };
+                historyList.appendChild(listItem);
+            });
+        }
+    </script> 
 </body>
 </html>
