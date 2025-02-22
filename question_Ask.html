@@ -70,6 +70,10 @@
 
         #summary {
             font-size: 36px;
+            background-color: #DBDBDB;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px;
         }
 
         #summary-list {
@@ -106,8 +110,8 @@
 <body>
     <div id="textbox">
         <div id="questionBox">
-            <h2 id="question">問題將顯示在這裡</h2>
-            <div id="options"></div>
+            <h2 id="question" style="text-align: center;">問題將顯示在這裡</h2>
+            <div id="options" ></div>
         </div>
         <button id="next-question" onclick="generateQuestion()">下一題</button>
     </div>
@@ -116,8 +120,8 @@
         <p id="prev-question-text">無</p>
         <p id="prev-answer-text">無</p>
     </div>
-    <div id="summary" style="display: none;">
-        <h3>前10題的問題與答案:</h3>
+    <div id="summary" style="display: none;text-align: center;">
+        <h3>前5題的問題與答案:</h3>
         <ul id="summary-list"></ul>
         <button onclick="restartQuiz()">重新開始</button>
     </div>
@@ -157,12 +161,13 @@
             var randomIndex = Math.floor(Math.random() * data.length);
             var correctWord = data[randomIndex][0];
             var chineseExplanation = data[randomIndex][2];
+            var partOfSpeech = data[randomIndex][1];
 
             var isWordQuestion = Math.random() < 0.5;
             var options = [];
 
             if (isWordQuestion) {
-                document.getElementById("question").innerHTML = "選擇正確的單詞: " + chineseExplanation;
+                document.getElementById("question").innerHTML = "選擇正確的單詞:" + "<br>" + chineseExplanation;
                 currentAnswer = correctWord;
                 options.push(correctWord);
                 while (options.length < 4) {
@@ -173,7 +178,7 @@
                     }
                 }
             } else {
-                document.getElementById("question").innerHTML = "選擇正確的中文解釋: " + correctWord;
+                document.getElementById("question").innerHTML = "選擇正確的中文解釋: " + "<br>" + correctWord;
                 currentAnswer = chineseExplanation;
                 options.push(chineseExplanation);
                 while (options.length < 4) {
@@ -194,20 +199,20 @@
                 optionElement.className = "option";
                 optionElement.textContent = option;
                 optionElement.onclick = function() {
-                    checkAnswer(option);
+                    checkAnswer(option, partOfSpeech);
                 };
                 optionsDiv.appendChild(optionElement);
             });
         }
 
-        function checkAnswer(selectedOption) {
+        function checkAnswer(selectedOption, partOfSpeech) {
             var isCorrect = selectedOption === currentAnswer;
             if (isCorrect) {
                 alert("正確!");
             } else {
                 alert("錯誤，正確答案是: " + currentAnswer);
             }
-            questionHistory.push({ question: previousQuestion, answer: previousAnswer, isCorrect: isCorrect });
+            questionHistory.push({ question: previousQuestion, answer: previousAnswer + " (" + partOfSpeech + ")", isCorrect: isCorrect });
             questionCount++;
             generateQuestion(); // 在顯示提示後生成下一題
         }
@@ -219,7 +224,9 @@
             summaryList.innerHTML = "";
             questionHistory.forEach((entry, index) => {
                 var listItem = document.createElement("li");
-                listItem.textContent = `問題 ${index + 1}: ${entry.question} - 答案: ${entry.answer}`;
+                var cleanQuestion = entry.question.replace(/<br>/g, "");
+                var cleanAnswer = entry.answer.replace(/<br>/g, "");
+                listItem.textContent = `問題 ${index + 1}: ${cleanQuestion} - 答案: ${cleanAnswer}`;
                 if (!entry.isCorrect) {
                     listItem.style.color = "red"; // 用紅色顯示錯誤的答案
                 }
